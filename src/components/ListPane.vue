@@ -15,6 +15,7 @@
       border
       highlight-current-row
       @current-change="setSelection"
+      ref="tableView"
     >
       <el-table-column
         v-for="column in columns"
@@ -46,7 +47,24 @@ export default {
     };
   },
   methods: {
-    cellFormatter:function name(row, col,val,i) {
+    deleteSelectedRow(){
+      if(this.selection==null) 
+      return
+      let index = this.table.indexOf(this.selection)
+      this.table.splice(index,1);
+      this.$refs.tableView.setCurrentRow(index);
+    },
+    copySelectedRow(){
+      if(this.selection==null) 
+      return
+      let index = this.table.indexOf(this.selection)
+      this.table.splice(index,0,Object.assign({}, this.selection));
+    },
+    addRow(row){
+      let index = this.selection==null? 0 : this.table.indexOf(this.selection)
+      this.table.splice(index,0,row);
+    },
+    cellFormatter:function name(row, col,val) {
       if(val instanceof Date){
         return val.toLocaleDateString();
       }
@@ -72,7 +90,7 @@ export default {
   },
   components:{
      ButtonPane
-  }
+  },
 }
 </script>
 

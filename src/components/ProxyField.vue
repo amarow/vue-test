@@ -34,7 +34,7 @@ export default {
     },
   },
   watch:{
-   inputValue:function(val ,oldVal) {
+   inputValue:function(val ) {
      this.$emit("input",val);
    },
    value(value){
