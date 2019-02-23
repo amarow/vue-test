@@ -20,6 +20,7 @@
             :commands="editorConfig.commands"
             :model="person"
             @emitCommand="handleCommand"
+            ref="myEditPane"
           />
       </el-row>
     </el-main>
@@ -44,6 +45,7 @@ class Person{
     this.birth_date="";
     this.gender="";
     this.hair_color="";
+    this.eye_color="";
   }
 }
 
@@ -60,7 +62,8 @@ export default {
           column.create("Name").alignCenter().build(),
           column.create("Birth Year","birth_year").build(),
           column.create("Gender").build(),
-          column.create("Hair Color","hair_color").alignRight().build(),
+          column.create("Hair Color","hair_color").build(),
+          column.create("Eye Color","eye_color").build(),
         ],
         comands:[
           command.create("Copy").callback(()=>this.$refs.myListPane.copySelectedRow()).build(),
@@ -76,10 +79,12 @@ export default {
           form.space().bottomSpace("10px").build(),
           form.newRow(),
             form.textInput("name").span(4).build(),
-            form.textInput("birth_year").span(4).build(),
-          form.newRow(),
             form.textInput("gender").span(4).build(),
-            form.textInput("hair_color").span(4).build()
+          form.newRow(),
+            form.textInput("hair_color").span(4).build(),
+            form.textInput("eye_color").span(4).build(),
+          form.newRow(),
+            form.textInput("birth_year").span(4).build(),
         ],
         commands: [
           command.create("Load").callback(this.loadPeople).build(),
