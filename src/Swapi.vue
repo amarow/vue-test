@@ -33,6 +33,7 @@ import EditPane from "./components/EditPane.vue";
 import { FormFactory } from "./factories/FormFactory";
 import { CommandFactory } from "./factories/CommandFactory";
 import { ColumnFactory } from "./factories/ColumnFactory";
+import axios from 'axios';
 
 
 var form = new FormFactory(4).defaultBottomSpace("8px").allLabelEndWithColon();
@@ -103,19 +104,13 @@ export default {
       this.person = selection ? selection : new Person();
     },
 		loadPeople() {
-      var req = new XMLHttpRequest();
-          req.open('get', 'https://swapi.co/api/people/?format=json', true);
-          req.setRequestHeader('Accept', 'application/json');
-          req.onload = (e)=>{
-            if (req.readyState != 4 && e.type !== 'load') return;
-            if (req.status && req.status != 200) {
-               this.$notify.error({ title: 'Error', message: 'error callin SWAPI' }); 
-            } else {
-              var json = JSON.parse(req.responseText);
-              this.table = json.results;
-            }
-          };
-          req.send();
+      axios.get('https://swapi.co/api/people/?format=json')
+      .then((response)=>{
+        this.table = response.data.results;
+      })
+      .catch((error)=>{
+        this.$notify.error({ title: 'Error', message: 'error callin SWAPI:'+error });
+      })  
 		}
   },
   components: {
