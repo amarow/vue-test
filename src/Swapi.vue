@@ -1,11 +1,11 @@
 <template>
-  <el-container id="app" > 
-    <el-main>
-      <el-row>
+  <el-container > 
           <list-pane
             height="400"
+            width="50%"
             :table="table"
             :searchAble="true"
+            :bottom_commands="true"
             :columns="listerConfig.columns"
             :commands="listerConfig.comands"
             @selectionChanged="listSelectionChanged"
@@ -13,6 +13,7 @@
             ref="myListPane"
           />
           <edit-pane
+            width="50%"
             labelPosition="right"
             labelWidth="7em"
             :gutter=15
@@ -22,8 +23,6 @@
             @emitCommand="handleCommand"
             ref="myEditPane"
           />
-      </el-row>
-    </el-main>
   </el-container>
 </template>
 
@@ -36,7 +35,7 @@ import { ColumnFactory } from "./factories/ColumnFactory";
 import axios from 'axios';
 
 
-var form = new FormFactory(4).defaultBottomSpace("8px").allLabelEndWithColon();
+var form = new FormFactory(2).defaultBottomSpace("8px").allLabelEndWithColon();
 var command = new CommandFactory();
 var column = new ColumnFactory();
 
@@ -51,7 +50,7 @@ class Person{
 }
 
 export default {
-  name: "app",
+  name: "swapi",
   data() {
     return {
       person: new Person(),
@@ -67,9 +66,10 @@ export default {
           column.create("Eye Color","eye_color").build(),
         ],
         comands:[
-          command.create("Copy").callback(()=>this.$refs.myListPane.copySelectedRow()).build(),
+          command.create("Copy").callback(  ()=>this.$refs.myListPane.copySelectedRow()).build(),
           command.create("Delete").callback(()=>this.$refs.myListPane.deleteSelectedRow()).build(),
-          command.create("New").secondClass().callback(()=>this.$refs.myListPane.addRow(new Person())).build()
+          command.create("New").callback(   ()=>this.$refs.myListPane.addRow(new Person())).build(),
+          command.create("Load").callback(  this.loadPeople).build(),
         ]
       }, 
 
@@ -77,21 +77,21 @@ export default {
       editorConfig :{
         inputs: [
           form.newRow(),
-          form.space().bottomSpace("10px").build(),
+          form.space().bottomSpace("20px").build(),
           form.newRow(),
-            form.textInput("name").span(4).build(),
-            form.textInput("gender").span(4).build(),
+            form.textInput("Name").span(8).build(),
+            form.textInput("Gender").span(8).build(),
           form.newRow(),
-            form.textInput("hair_color").span(4).build(),
-            form.textInput("eye_color").span(4).build(),
+            form.textInput("Hair Color","hair_color").span(8).build(),
+            form.textInput("Eye Color","eye_color").span(8).build(),
           form.newRow(),
-            form.textInput("birth_year").span(4).build(),
-        ],
-        commands: [
-          command.create("Load").callback(this.loadPeople).build(),
+            form.textInput("Birth Year","birth_year").span(8).build(),
         ],
       },
     };
+  },
+  mounted(){
+    this.loadPeople();
   },
   methods: {
     handleCommand: function(command) {
@@ -111,7 +111,7 @@ export default {
       .catch((error)=>{
         this.$notify.error({ title: 'Error', message: 'error callin SWAPI:'+error });
       })  
-		}
+    },
   },
   components: {
     ListPane,
@@ -120,24 +120,4 @@ export default {
 };
 </script>
 
-<style>
-.el-select-dropdown__item{
-    font-family: "Avenir", Helvetica, Arial, sans-serif;
-}
-.el-popover{
-    font-family: "Avenir", Helvetica, Arial, sans-serif;
-}
-.el-date-picker {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-}
-.el-dropdown-menu__item {
-    font-family: "Avenir", Helvetica, Arial, sans-serif;
-}
-#app {
-  height: 900px;
-  background: rgb(250, 250, 250);
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-</style>
+

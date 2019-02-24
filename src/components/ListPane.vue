@@ -1,7 +1,7 @@
 <template>
   <div class="a-listpane" :style="'width:'+width">
     <button-pane
-      v-if="commands"
+      v-if="commands && !bottom_commands"
       :commands="commands"
       :searchInput="searchAble"
       @searchChanged="(value)=>{searchText=value}"
@@ -28,6 +28,13 @@
         :formatter="cellFormatter"
       ></el-table-column>
     </el-table>
+    <button-pane
+      v-if="commands && bottom_commands"
+      :commands="commands"
+      :searchInput="searchAble"
+      @searchChanged="(value)=>{searchText=value}"
+      @emitCommand="emitCommand"
+    />
   </div>
 </template>
 
@@ -39,7 +46,7 @@ import {HasCommands} from "../mixins/HasCommands.js";
 
 export default {
   mixins:[HasSelection,HasCommands],
-  props: ["table", "columns", "height","width","searchAble","filterText"],
+  props: ["table", "columns", "height","width","searchAble","bottom_commands","filterText"],
   name: "ListPane",
   data() {
     return {
