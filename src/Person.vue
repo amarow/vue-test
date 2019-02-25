@@ -12,8 +12,8 @@
             ref="myListPane"
           />
           <edit-pane
-            labelPosition="right"
-            :gutter=15
+            labelPosition="left"
+            :gutter=35
             :inputs="editorConfig.inputs"
             :commands="editorConfig.commands"
             :model="person"
@@ -33,7 +33,7 @@ import { CommandFactory } from "./factories/CommandFactory";
 import { ColumnFactory } from "./factories/ColumnFactory";
 
 
-var form = new FormFactory(4).defaultBottomSpace("8px");
+var form = new FormFactory(4).defaultBottomSpace("4px");
 var command = new CommandFactory();
 var column = new ColumnFactory();
 

@@ -12,11 +12,11 @@
             @emitCommand="handleCommand"
             ref="myListPane"
           />
+          <div style="width:30px"/>
           <edit-pane
             width="50%"
-            labelPosition="top"
-            labelWidth="7em"
-            :gutter=15
+            labelPosition="right"
+            :gutter=35
             :inputs="editorConfig.inputs"
             :commands="editorConfig.commands"
             :model="person"
@@ -35,7 +35,7 @@ import { ColumnFactory } from "./factories/ColumnFactory";
 import axios from 'axios';
 
 
-var form = new FormFactory(2).defaultBottomSpace("40px");
+var form = new FormFactory(2).defaultBottomSpace("5px");
 var command = new CommandFactory();
 var column = new ColumnFactory();
 
@@ -79,13 +79,13 @@ export default {
           form.newRow(),
           form.space().bottomSpace("2px").build(),
           form.newRow(),
-            form.textInput("Name").span(8).offset(1).build(),
+            form.textInput("Name").span(8).build(),
             form.textInput("Gender").span(8).build(),
           form.newRow(),
-            form.textInput("Hair Color","hair_color").span(8).offset(1).build(),
+            form.textInput("Hair Color","hair_color").span(8).build(),
             form.textInput("Eye Color","eye_color").span(8).build(),
           form.newRow(),
-            form.textInput("Birth Year","birth_year").span(8).offset(1).build(),
+            form.textInput("Birth Year","birth_year").span(8).build(),
         ],
       },
     };
