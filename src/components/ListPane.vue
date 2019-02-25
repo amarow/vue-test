@@ -8,6 +8,7 @@
       @emitCommand="emitCommand"
     />
     <el-table
+      v-loading="loading" 
       :data="table.filter(row => filterBySearchText(row))"
       :height="height"
       size="mini"
@@ -51,9 +52,13 @@ export default {
   data() {
     return {
       searchText: null,
+      loading:false,
     };
   },
   methods: {
+    setLoading(loading){
+       this.loading=loading;
+    },
     deleteSelectedRow(){
       if(this.selection==null) 
       return
@@ -104,6 +109,6 @@ export default {
 
 <style >
 .el-table .cell {
-  line-height: 15px;
+  line-height: 18px;
 }
 </style>

@@ -1,12 +1,12 @@
 <template>
 <div :style="'width:'+width">
-  <el-form :label-position="labelPosition" :label-width="labelWidth" size="mini" :model="model">
+  <el-form :label-position="labelPosition" size="mini" :model="model">
    <el-row v-for="row in rows" :key="row.count" :gutter="gutter">
      <el-col v-for="input in row.inputs" :span="input.span" :offset="input.offset" :key="input.key">
-      <el-form-item :label="input.label" :style="'margin-bottom:'+input.bottomSpace+';'" > 
+      <el-form-item :label="input.getLabel()" :style="'margin-bottom:'+input.bottomSpace+';'" :label-width="input.getLabelWidth()"> 
         <el-input       v-if="input.type=='text'"         v-model="model[input.key]" :placeholder="input.placeHolder"/>
         <el-input       v-if="input.type=='area'"         v-model="model[input.key]" :placeholder="input.placeHolder" type="textarea"/>
-        <el-checkbox    v-else-if="input.type=='boolean'" v-model="model[input.key]" :placeholder="input.placeHolder"/>
+        <el-checkbox    v-else-if="input.type=='boolean'" v-model="model[input.key]" :label="input.getCheckboxLabel()"/>
         <proxy-field    v-else-if="input.type=='lookup'"  v-model="model[input.key]" :placeholder="input.placeHolder" :table="input.table" :columns="input.columns"/>
         <el-date-picker v-else-if="input.type=='date'"    v-model="model[input.key]" :placeholder="input.placeHolder" style="width:100%;"/>
         <el-select      v-else-if="input.type=='select'"  v-model="model[input.key]" :placeholder="input.placeHolder" filterable style="width:100%;">
@@ -35,7 +35,7 @@ class Row{
 
 export default {
   mixins:[HasCommands],
-  props:[ "model","inputs","labelPosition","labelWidth","gutter","width"],
+  props:[ "model","inputs","labelPosition","gutter","width"],
   name: "EditPane",
   computed: {
     rows(){

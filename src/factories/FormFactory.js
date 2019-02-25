@@ -1,4 +1,5 @@
 export class ComponentConfig{
+    labelWidth="7em";
     label;
     key;
     span;
@@ -9,14 +10,25 @@ export class ComponentConfig{
     bottomSpace=null;
     table=null;
     columns=null;
+
+    getLabel(){
+        return this.type == "boolean" ? null :this.label;
+    }
+    getLabelWidth(){
+        return this.type == "boolean" ? 0 :this.labelWidth;
+    }
+    getCheckboxLabel(){
+        return this.label;
+    }
 }
   
 export class FormFactory{
     constructor(columns){
         this.input=null;
-        this.allLabelWithColon=true;
+        this.allLabelWithColon=false;
         this.allCollSpan=24/columns;
         this.allBottomSpace="5px";
+        this.allLabelWidth="7em";
     }
     defaultBottomSpace(val){
         this.allBottomSpace=val;
@@ -28,6 +40,10 @@ export class FormFactory{
     }
     allLabelEndWithColon(){
         this.allLabelWithColon=true;
+        return this;
+    }
+    defaultLabelWidth(val){
+        this.allLabelWidth=val;
         return this;
     }
 
@@ -68,6 +84,10 @@ export class FormFactory{
         this.getInput().label=label; 
         return this;
     }   
+    labelWidth(width){
+        this.getInput().labelWidth=width; 
+        return this;
+    }   
     hr(label){
         this.getInput().type='hr'; 
         this.getInput().label=label; 
@@ -78,7 +98,7 @@ export class FormFactory{
         return this.build();
     }   
     textInput(label,key=label.toLowerCase(), type="text"){
-        if(this.allLabelWithColon && !label.endsWith(':')){
+        if(this.allLabelWithColon && !label.endsWith(':') && type!="boolean"){
             this.getInput().label=label+":";
         } else{
             this.getInput().label=label;
@@ -127,6 +147,7 @@ export class FormFactory{
             this.input = new ComponentConfig();
             this.input.type = "text";
             this.span(this.allCollSpan);
+            this.labelWidth(this.allLabelWidth);
             this.input.bottomSpace = this.allBottomSpace;
         } 
         return this.input;

@@ -9,10 +9,10 @@
             :commands="listerConfig.comands"
             @selectionChanged="listSelectionChanged"
             @emitCommand="handleCommand"
+            ref="myListPane"
           />
           <edit-pane
             labelPosition="right"
-            labelWidth="7em"
             :gutter=15
             :inputs="editorConfig.inputs"
             :commands="editorConfig.commands"
@@ -33,7 +33,7 @@ import { CommandFactory } from "./factories/CommandFactory";
 import { ColumnFactory } from "./factories/ColumnFactory";
 
 
-var form = new FormFactory(4).defaultBottomSpace("8px").allLabelEndWithColon();
+var form = new FormFactory(4).defaultBottomSpace("8px");
 var command = new CommandFactory();
 var column = new ColumnFactory();
 
@@ -56,15 +56,9 @@ export default {
           column.create("Birthday").type('date').build()
         ],
         comands:[
-          command.create("Copy").callback(args=>{
-            args.table.splice(args.table.indexOf(args.selection),0,args.selection.copy(),)
-           }).build(),
-           command.create("Delete").callback(args=>{
-             args.table.splice(args.table.indexOf(args.selection),1);
-           }).build(),
-           command.create("New").secondClass().callback(args=>{
-             args.table.splice(args.table.indexOf(args.selection),0,new Person());
-           }).build()
+          command.create("Copy").callback(  ()=>this.$refs.myListPane.copySelectedRow()).build(),
+          command.create("Delete").callback(()=>this.$refs.myListPane.deleteSelectedRow()).build(),
+          command.create("New").callback(   ()=>this.$refs.myListPane.addRow(new Person())).build(),
         ]
       }, 
 
@@ -75,7 +69,7 @@ export default {
           form.space().bottomSpace("10px").build(),
           form.newRow(),
             form.textInput("Id").span(4).build(),
-            form.checkbox("Male").span(2).build(),
+            form.checkbox("Male").span(2).offset(-1).build(),
             form.dateInput("Date of Birth", "birthday").build(),
           form.newRow(),
             form.hr("Adress").span(24).build(),

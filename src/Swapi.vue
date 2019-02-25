@@ -14,7 +14,7 @@
           />
           <edit-pane
             width="50%"
-            labelPosition="right"
+            labelPosition="top"
             labelWidth="7em"
             :gutter=15
             :inputs="editorConfig.inputs"
@@ -35,7 +35,7 @@ import { ColumnFactory } from "./factories/ColumnFactory";
 import axios from 'axios';
 
 
-var form = new FormFactory(2).defaultBottomSpace("8px").allLabelEndWithColon();
+var form = new FormFactory(2).defaultBottomSpace("40px");
 var command = new CommandFactory();
 var column = new ColumnFactory();
 
@@ -77,15 +77,15 @@ export default {
       editorConfig :{
         inputs: [
           form.newRow(),
-          form.space().bottomSpace("20px").build(),
+          form.space().bottomSpace("2px").build(),
           form.newRow(),
-            form.textInput("Name").span(8).build(),
+            form.textInput("Name").span(8).offset(1).build(),
             form.textInput("Gender").span(8).build(),
           form.newRow(),
-            form.textInput("Hair Color","hair_color").span(8).build(),
+            form.textInput("Hair Color","hair_color").span(8).offset(1).build(),
             form.textInput("Eye Color","eye_color").span(8).build(),
           form.newRow(),
-            form.textInput("Birth Year","birth_year").span(8).build(),
+            form.textInput("Birth Year","birth_year").span(8).offset(1).build(),
         ],
       },
     };
@@ -104,9 +104,11 @@ export default {
       this.person = selection ? selection : new Person();
     },
 		loadPeople() {
+      this.$refs.myListPane.setLoading(true);
       axios.get('https://swapi.co/api/people/?format=json')
       .then((response)=>{
         this.table = response.data.results;
+        this.$refs.myListPane.setLoading(false);
       })
       .catch((error)=>{
         this.$notify.error({ title: 'Error', message: 'error callin SWAPI:'+error });
